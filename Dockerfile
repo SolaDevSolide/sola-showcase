@@ -2,6 +2,7 @@
 FROM node:24-alpine AS base
 ENV NODE_ENV=production
 WORKDIR /app
+RUN apk add --no-cache libc6-compat
 
 # -------- dev (for VS Code / next dev) --------
 FROM node:24-alpine AS dev
