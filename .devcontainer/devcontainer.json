@@ -1,0 +1,57 @@
+{
+  "name": "sola-showcase (dev)",
+
+  // Point to your docker-compose setup
+  "dockerComposeFile": ["../docker-compose.yml"],
+  "service": "web",
+  "workspaceFolder": "/app",
+  "runServices": ["web"],
+  "composeProfiles": ["dev"],
+  "overrideCommand": false,
+
+  // Forward app + debugger ports
+  "forwardPorts": [3000, 9229],
+  "portsAttributes": {
+    "3000": { "label": "Next.js app" },
+    "9229": { "label": "Node.js debugger" }
+  },
+
+  // Install VS Code extensions inside the container
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",          // ESLint
+        "esbenp.prettier-vscode",          // Prettier
+        "ms-vscode.vscode-typescript-next",// TypeScript nightly (better intellisense)
+        "eamodio.gitlens",                 // GitLens
+        "mhutchie.git-graph",              // Git graph
+        "ms-azuretools.vscode-docker",     // Docker explorer
+        "ms-vscode-remote.remote-containers",
+        "ms-vscode.js-debug",              // JS debugger
+        "ms-vscode.js-debug-companion",
+        "ms-vscode.json-language-features",
+        "redhat.vscode-yaml",              // YAML support
+        "anthropic.mcp"                    // MCP
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "files.eol": "\n",
+        "git.enabled": true,
+        "typescript.tsserver.experimental.enableProjectDiagnostics": true,
+        "json.schemas": [
+          {
+            "fileMatch": ["**/mcp.json", "**/*.mcp.json"],
+            "url": "https://raw.githubusercontent.com/modelcontextprotocol/spec/main/schema/mcp.schema.json"
+          }
+        ]
+      }
+    }
+  },
+
+  // Run extra setup after container is created
+  "postCreateCommand": "apk add --no-cache git bash openssh curl vim",
+
+  // Stop containers when VS Code window closes
+  "shutdownAction": "stopCompose"
+}

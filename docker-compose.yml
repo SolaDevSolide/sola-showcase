@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  web:
+    container_name: sola-showcase-dev
+    build:
+      context: .
+      target: dev
+    command: sh -c "npm run dev"
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+    env_file:
+      - .env.local
+    environment:
+      - NODE_ENV=development
+      - NEXT_TELEMETRY_DISABLED=1
+      - NODE_OPTIONS=--inspect=0.0.0.0:9229
+      - CHOKIDAR_USEPOLLING=1
+      - WATCHPACK_POLLING=true
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    profiles: ["dev"]
+
+  web-prod:
+    container_name: sola-showcase
+    build:
+      context: .
+      target: runner
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.local
+    environment:
+      - NODE_ENV=production
+    profiles: ["prod"]
